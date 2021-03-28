@@ -81,12 +81,18 @@ const getRawTask = (id, task) => {
     <td>
       ${task.task}
     </td>
+
     <td>
-      ${task.completed}
-    </td>
-    <td>
-      <span onclick="setTaskStatus(${id}, true)">✔️</  span>
-      <span onclick="deleteTask(${id})">❌</span>
+      <span onclick="setTaskStatus(${id}, true)">
+        <i class="material-icons green-text">
+        done
+        </i>
+      </  span>
+      <span onclick="deleteTask(${id})">
+        <i class="material-icons red-text">
+          delete
+        </i>
+      </span>
     </td>
   </tr>`;
 }
@@ -100,11 +106,16 @@ const getRawCompleted = (id, task) => {
     ${task.task}
   </td>
   <td>
-  ${task.completed}
-</td>
-  <td>
-    <span onclick="setTaskStatus(${id}, false)">🔁</  span>
-    <span onclick="deleteTask(${id})">❌</span>
+    <span onclick="setTaskStatus(${id}, false)">
+      <i class="material-icons blue-text">
+        repeat
+      </i>
+    </  span>
+    <span onclick="deleteTask(${id})">
+      <i class="material-icons red-text">
+        delete
+      </i>
+    </span>
   </td>
 </tr>`;
 }
@@ -150,5 +161,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
   getLocalStorage()
   var elems = document.querySelectorAll('.collapsible');
   var instances = M.Collapsible.init(elems, {accordion: false});
+
+  var elems = document.querySelectorAll('.tooltipped');
+  var instances = M.Tooltip.init(elems, {});
   // console.log(instances)
 })
