@@ -6,13 +6,6 @@ const list = document.querySelector('#lista')
 const completedList = document.querySelector('#completedTasks')
 const globalTasks = []
 // Functiones
-
-const getHTMLToast = (msg, undo) => {
-  const buttonUndo = undo ? '<button class="btn-flat toast-action">Undo</button>' :  '';
-
-  return `<span>${msg}</span>${buttonUndo}`
-}
-
 const addTask = () => {
   const newTask = task.value;
   const newSubject = subject.value;
@@ -21,17 +14,17 @@ const addTask = () => {
     alert('Tarea repetida o valores inválidos');
     return;
   }
-  
-  pushTask({ subject: newSubject, task: newTask, completed: false});
-  
+
+  pushTask({ subject: newSubject, task: newTask, completed: false });
+
 }
 
 const pushTask = (taskL) => {
   globalTasks.push(taskL);
   task.value = ''
   subject.value = ''
-  console.log(globalTasks)
-  M.toast({html: getHTMLToast('¡Tarea añadida!', false)});
+  // console.log(globalTasks)
+  showToast("Tarea añadida, ¡A trabajar! ;)", false);
 }
 
 const validTask = (task, subject) => {
@@ -47,16 +40,12 @@ const existsTask = (task, subject) => {
   });
 }
 
-const updateLocalStorage = () => {
-  localStorage.setItem('tasks', JSON.stringify(globalTasks))
-}
-
 const showTasks = () => {
   let html = ''
   let completedHtml = ''
   globalTasks.forEach((task, id) => {
     if (task) {
-      console.log(task, id)
+      // console.log(task, id)
       if (task.completed) {
         completedHtml += getRawCompleted(id, task);
       }
@@ -67,13 +56,10 @@ const showTasks = () => {
   })
   list.innerHTML = html;
   completedList.innerHTML = completedHtml;
-  
+
 }
 
 const getRawTask = (id, task) => {
-  let status = '';
-  if(task.completed) status = '✔️';
-
   return `<tr id = task${id}>
     <td>
       ${task.subject}
@@ -81,13 +67,13 @@ const getRawTask = (id, task) => {
     <td>
       ${task.task}
     </td>
-
     <td>
-      <span onclick="setTaskStatus(${id}, true)">
+      <span onclick="setTaskStatus(${id}, true, true)">
         <i class="material-icons green-text">
         done
         </i>
-      </  span>
+      </span>
+      &nbsp;&nbsp;&nbsp;
       <span onclick="deleteTask(${id})">
         <i class="material-icons red-text">
           delete
@@ -106,11 +92,12 @@ const getRawCompleted = (id, task) => {
     ${task.task}
   </td>
   <td>
-    <span onclick="setTaskStatus(${id}, false)">
+    <span onclick="setTaskStatus(${id}, false, true)">
       <i class="material-icons blue-text">
         repeat
       </i>
-    </  span>
+    </span>
+    &nbsp;&nbsp;&nbsp;
     <span onclick="deleteTask(${id})">
       <i class="material-icons red-text">
         delete
@@ -121,20 +108,51 @@ const getRawCompleted = (id, task) => {
 }
 
 const deleteTask = (id) => {
-  console.log(id)
-  console.log(globalTasks)
+  // console.log(id)
+  // console.log(globalTasks)
   // globalTasks.splice(id, 1)
-  delete globalTasks[id]
-  console.log(globalTasks)
-  updateLocalStorage()
-  showTasks()
+  const del = confirm(`¿Desea eliminar ${globalTasks[id].subject} : ${globalTasks[id].task}?`)
+
+  if (del) {
+    delete globalTasks[id]
+    // console.log(globalTasks)
+    updateLocalStorage()
+    showToast("Tarea eliminada", false);
+    showTasks()
+  }
+  
 }
 
-const setTaskStatus = (id, status) => {
+const setTaskStatus = (id, status, toast = false) => {
   let task = globalTasks[id];
-  if(task) task.completed = status;
+  if (task) task.completed = status;
+
   updateLocalStorage();
   showTasks();
+
+  if (toast) {
+    if (status) {
+      showToast("Tarea completada, ¡Sigue así! ;)", true, id, !status)
+
+    }
+    else {
+      showToast("De vuelta a la acción. ;)", true, id, !status)
+    }
+  }
+
+}
+
+const showToast = (msg, undo, id = -1, status = false) => {
+  const onclick = id >= 0 ? `onclick ="setTaskStatus(${id}, ${status}, false)"` : '';
+  const buttonUndo = undo ? `<button class="btn-flat toast-action" ${onclick}>Deshacer</button>` : '';
+
+  const htmlToast = `<span>${msg}</span>${buttonUndo}`;
+  M.toast({ html: htmlToast });
+}
+
+//Local storage
+const updateLocalStorage = () => {
+  localStorage.setItem('tasks', JSON.stringify(globalTasks))
 }
 
 const getLocalStorage = () => {
@@ -142,7 +160,7 @@ const getLocalStorage = () => {
   if (tasksStr && tasksStr.length > 0) {
     const tareasLocal = JSON.parse(tasksStr)
     tareasLocal.forEach(task => {
-      if(task) globalTasks.push(task)
+      if (task) globalTasks.push(task)
     })
   }
   showTasks()
@@ -160,7 +178,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   event.preventDefault()
   getLocalStorage()
   var elems = document.querySelectorAll('.collapsible');
-  var instances = M.Collapsible.init(elems, {accordion: false});
+  var instances = M.Collapsible.init(elems, { accordion: false });
 
   var elems = document.querySelectorAll('.tooltipped');
   var instances = M.Tooltip.init(elems, {});
