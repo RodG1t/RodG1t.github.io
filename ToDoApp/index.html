@@ -18,26 +18,24 @@
   <main>
     <div class="container">
       <div class="section">
-        <div class="col s12">
           <h3>ToDo - App</h3>
           <form id="form">
             <div class="row">
               <div class="input-field col s6">
                 <input type="text" class="validate" id="subject">
-                <label for="subject">Materia</label>
+                <label for="subject">Asunto</label>
               </div>
               <div class="input-field col s6">
                 <input type="text" class="validate" id="task">
                 <label for="task">Tarea</label>
               </div>
             </div>
-            <div class="row right">
+            <div class="right">
               <button type="submit" class="btn waves-effect blue z-depth-3">
                 <i class="material-icons">add</i>
               </button>
             </div>
           </form>
-        </div>
       </div>
       <br><br>
       <div class="divider"></div>
@@ -49,8 +47,9 @@
               <table class="highlight">
                 <thead>
                   <tr>
-                    <th>Materia</th>
+                    <th>Asunto</th>
                     <th>Tarea</th>
+                    <th>Completada</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -59,7 +58,7 @@
               </table>
             </div>
           </li>
-          <li>
+          <li class="active">
             <div class="collapsible-header"><i class="material-icons">task_alt</i>Tareas completadas</div>
             <div class="collapsible-body">
               <table class="highlight">
@@ -67,6 +66,7 @@
                   <tr>
                     <th>Materia</th>
                     <th>Tarea</th>
+                    <th>Completada</th>
                     <th></th>
                   </tr>
                 </thead>
