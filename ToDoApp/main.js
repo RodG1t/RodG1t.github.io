@@ -120,7 +120,7 @@ const deleteTask = (id) => {
     showToast("Tarea eliminada", false);
     showTasks()
   }
-  
+
 }
 
 const setTaskStatus = (id, status, toast = false) => {
@@ -184,3 +184,35 @@ document.addEventListener('DOMContentLoaded', (event) => {
   var instances = M.Tooltip.init(elems, {});
   // console.log(instances)
 })
+
+const exampleTasks = () => {
+  const task1 = {
+    subject: 'Cocina',
+    task: 'Preparar comida de la semana',
+    completed: false
+  }
+  const task2 =
+  {
+    subject: 'Escuela',
+    task: 'Leer reportes de Español',
+    completed: false
+  }
+  const task3 =
+  {
+    subject: 'Cuarto',
+    task: 'Escombrar ropero',
+    completed: true
+  }
+
+globalTasks.push(task1)
+globalTasks.push(task2)
+globalTasks.push(task3)
+
+}
+
+window.onload = function () {
+  if (localStorage.getItem("hasCodeRunBefore") === null) {
+      exampleTasks();
+      localStorage.setItem("hasCodeRunBefore", true);
+  }
+}
