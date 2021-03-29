@@ -204,15 +204,15 @@ const exampleTasks = () => {
     completed: true
   }
 
-globalTasks.push(task1)
-globalTasks.push(task2)
-globalTasks.push(task3)
+  globalTasks.push(task1)
+  globalTasks.push(task2)
+  globalTasks.push(task3)
 
 }
 
 window.onload = function () {
   if (localStorage.getItem("hasCodeRunBefore") === null) {
-      exampleTasks();
-      localStorage.setItem("hasCodeRunBefore", true);
+    exampleTasks();
+    localStorage.setItem("hasCodeRunBefore", true);
   }
 }
